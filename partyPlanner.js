@@ -13,7 +13,7 @@ The data stored in state is updated to stay in sync with the API.
 const cohort = "2311-FSA-ET-WEB-PT-SF";
 const APIURL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${cohort}/events`;
 
-//place to stor party plans
+//place to store party plans
 const partyPlans = {
     partyTime: [],
 };
@@ -23,3 +23,40 @@ const eventList = document.querySelector("#party");
 const addEventForm = document.querySelector("#parties");
 addEventForm.addEventListener("submit", parties);
 
+async function render() {
+    await getEvents();
+    renderpartyTime();
+}
+render(); 
+
+async function getEvents() {
+    try {
+const response = await fetch(API_URL);
+const json = await response.json();
+    console.log(json);
+    partyPlans.partyTime = json.data;
+    } catch (error) {
+    console.error(error);
+    }
+}
+console.log(getEvents());
+
+function renderpartyTime() {
+    if (!partyPlans.partyTime.length) {
+    eventList.innerHTML = "<li>No events.</li>";
+    return;
+    }
+
+    const eventCards = partyPlans.partyTime.map((party) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+        <h2>${party.name}</h2>
+        <p>${party.description}</p>
+        <p>${party.date}</p>
+        <p>${party.location}</p>
+    `;
+    return li;
+    });
+    console.log(eventCards, partyPlans.partyTime);
+    eventList.replaceChildren(...eventCards);
+}
