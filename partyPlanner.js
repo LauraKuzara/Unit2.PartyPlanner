@@ -108,7 +108,3 @@ async function parties(event) {
     console.error(error);
     }
 }
-
-//add a delete button to the list of parties
-//when delete button clicked it deletes selected party
-
