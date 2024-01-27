@@ -13,3 +13,13 @@ The data stored in state is updated to stay in sync with the API.
 const cohort = "2311-FSA-ET-WEB-PT-SF";
 const APIURL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${cohort}/events`;
 
+//place to stor party plans
+const partyPlans = {
+    partyTime: [],
+};
+
+const eventList = document.querySelector("#party");
+
+const addEventForm = document.querySelector("#parties");
+addEventForm.addEventListener("submit", parties);
+
