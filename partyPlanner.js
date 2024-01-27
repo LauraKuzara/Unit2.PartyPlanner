@@ -53,11 +53,36 @@ function renderpartyTime() {
         <p>${party.description}</p>
         <p>${party.date}</p>
         <p>${party.location}</p>
+        <button class="delete-btn" data-party-id="${party.id}">Delete</button>
     `;
     return li;
     });
     console.log(eventCards, partyPlans.partyTime);
     eventList.replaceChildren(...eventCards);
+
+    document.querySelectorAll(".delete-btn").forEach((deleteBtn) => {
+        deleteBtn.addEventListener("click", (event) => {
+            const partyId = event.target.dataset.partyId;
+            deleteParty(partyId);
+        });
+    });
+}
+
+async function deleteParty(partyId) {
+    try {
+        const response = await fetch(`${APIURL}/${partyId}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to delete party");
+        }
+
+        await getEvents();
+        renderpartyTime();
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 async function parties(event) {
@@ -67,7 +92,7 @@ async function parties(event) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-        name: addeventForm.name.value,
+        name: addEventForm.name.value,
         description: addEventForm.description.value,
         date: new Date (addEventForm.date.value),
         location: addEventForm.location.value,
@@ -83,3 +108,7 @@ async function parties(event) {
     console.error(error);
     }
 }
+
+//add a delete button to the list of parties
+//when delete button clicked it deletes selected party
+
